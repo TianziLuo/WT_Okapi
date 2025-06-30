@@ -33,7 +33,7 @@ class App:
     def __init__(self, root):
         self.root = root
         self.root.title("🦫 WT Okapi - Capybara Edition")
-        self.root.geometry("430x530")
+        self.root.geometry("430x500")
         self.root.configure(bg="#e9ede2")  # Capybara background
         self.checkbox_vars = []
         self.build_ui()
@@ -41,14 +41,14 @@ class App:
     def build_ui(self):
         self.add_title()
         row = 1
-        row = self.add_button_row("Clean Sarah Folder", clean_folder, row)
-        row = self.add_button_row("Copy WeChat Files", copy_weChat_files, row)
+        row = self.add_button_row("• Clean Sarah Folder", clean_folder, row)
+        row = self.add_button_row("• Copy WeChat Files", copy_weChat_files, row)
         row = self.add_download_section(row)
-        row = self.add_button_row("Clear Cache", clear_gen_py_cache, row)
-        row = self.add_button_row("Open 2.1", open_excel, row)
-        row = self.add_button_row("WT Outbound", WT_out, row)
-        row = self.add_button_row("Copy 'Use' from Downloads", copy_from_downloads, row)
-        row = self.add_button_row("Copy 2.1 to Downloads", copy2downloads, row)
+        row = self.add_button_row("• Clear Cache", clear_gen_py_cache, row)
+        row = self.add_button_row("• Open 2.1", open_excel, row)
+        row = self.add_button_row("• WT Outbound", WT_out, row)
+        row = self.add_button_row("• Copy 'Use' from Downloads", copy_from_downloads, row)
+        row = self.add_button_row("• Copy 2.1 to Downloads", copy2downloads, row)
 
     def add_title(self):
         tk.Label(
@@ -58,27 +58,29 @@ class App:
             bg="#e9ede2",
             fg="#5a4a3c"
         ).grid(row=0, column=0, columnspan=3, pady=15)
-
     def add_button_row(self, label, func, row):
         tk.Label(
             self.root,
             text=label,
             font=('Segoe UI', 12, 'bold'),
             bg="#e9ede2",
-            fg="#4a4a4a"
+            fg="#4a4038"
         ).grid(row=row, column=0, sticky='w', padx=10, pady=5)
 
         tk.Button(
             self.root,
             text="Run",
             command=threaded(func),
-            bg="#8e735b",
-            fg="#fffaf0",
+            bg="#9E6C55",  
+            fg="#fdf8f4",  
             font=('Segoe UI', 12, 'bold'),
             width=12,
             height=1,
-            activebackground="#a89b94",
-            activeforeground="#ffffff"
+            activebackground="#b98568",  
+            activeforeground="#ffffff",
+            relief="flat",
+            bd=0,
+            cursor="hand2"
         ).grid(row=row, column=1, pady=5)
         return row + 1
 
@@ -89,20 +91,23 @@ class App:
             text="Download TP Orders:",
             font=('Segoe UI', 12, 'bold'),
             bg="#e9ede2",
-            fg="#4a4a4a"
+            fg="#4a4038"
         ).grid(row=row, column=0, sticky='w', padx=15, pady=10)
 
         tk.Button(
             self.root,
             text="Download",
             command=self.run_download_tp,
-            bg="#8e735b",
-            fg="#fffaf0",
+            bg="#9E6C55",
+            fg="#fdf8f4",
             font=('Segoe UI', 12, 'bold'),
             width=12,
             height=1,
-            activebackground="#a89b94",
-            activeforeground="#ffffff"
+            activebackground="#b98568",
+            activeforeground="#ffffff",
+            relief="flat",
+            bd=0,
+            cursor="hand2"
         ).grid(row=row, column=1, sticky='e', padx=15, pady=10)
 
         row += 1
@@ -112,12 +117,15 @@ class App:
                 self.root,
                 text=acct["USERNAME"],
                 variable=var,
-                bg="#e9ede2",
-                font=('Segoe UI', 11,'bold'),
-                fg="#3e3e3e",
+                bg="#e9ede2",  # 更亮的米色对比背景
+                font=('Segoe UI', 11, 'bold'),
+                fg="#4a4038",
                 activebackground="#e9ede2",
                 activeforeground="#3e3e3e",
-                selectcolor="#e9ede2"
+                selectcolor="#e9ede2",
+                highlightthickness=0,
+                bd=0,
+                cursor="hand2"
             )
             cb.grid(row=row, column=0, sticky='w', padx=30)
             self.checkbox_vars.append((var, acct))
