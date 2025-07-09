@@ -5,11 +5,9 @@ import traceback
 from TP_acc import ACCOUNTS
 from tkinter import messagebox
 from utils.func import (
-    clean_folder,
-    copy_weChat_files,
+    clean_folder_and_copy_files,
     download_TP,
-    clear_gen_py_cache,
-    open_excel,
+    excel_process,
     WT_out,
     copy_from_downloads,
     copy2downloads
@@ -33,7 +31,7 @@ class App:
     def __init__(self, root):
         self.root = root
         self.root.title("🦫 WT Okapi - Capybara Edition")
-        self.root.geometry("430x500")
+        self.root.geometry("420x420")
         self.root.configure(bg="#e9ede2")  # Capybara background
         self.checkbox_vars = []
         self.build_ui()
@@ -41,11 +39,9 @@ class App:
     def build_ui(self):
         self.add_title()
         row = 1
-        row = self.add_button_row("• Clean Sarah Folder", clean_folder, row)
-        row = self.add_button_row("• Copy WeChat Files", copy_weChat_files, row)
+        row = self.add_button_row("• Clean Folder & Copy Files", clean_folder_and_copy_files, row)
         row = self.add_download_section(row)
-        row = self.add_button_row("• Clear Cache", clear_gen_py_cache, row)
-        row = self.add_button_row("• Open 2.1", open_excel, row)
+        row = self.add_button_row("• Open 2.1", excel_process, row)
         row = self.add_button_row("• WT Outbound", WT_out, row)
         row = self.add_button_row("• Copy 'Use' from Downloads", copy_from_downloads, row)
         row = self.add_button_row("• Copy 2.1 to Downloads", copy2downloads, row)
@@ -88,7 +84,7 @@ class App:
         row = start_row
         tk.Label(
             self.root,
-            text="Download TP Orders:",
+            text="• Download TP Orders:",
             font=('Segoe UI', 12, 'bold'),
             bg="#e9ede2",
             fg="#4a4038"
@@ -117,7 +113,7 @@ class App:
                 self.root,
                 text=acct["USERNAME"],
                 variable=var,
-                bg="#e9ede2",  # 更亮的米色对比背景
+                bg="#e9ede2",  
                 font=('Segoe UI', 11, 'bold'),
                 fg="#4a4038",
                 activebackground="#e9ede2",

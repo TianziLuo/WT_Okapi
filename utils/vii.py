@@ -13,7 +13,7 @@ def copy_from_downloads():
         if latest:
             copy_file(latest, target)
         else:
-            print(f"⚠️ 未找到今天包含「{kw}」的 CSV 文件")
+            print(f"⚠️ No CSV file containing '{kw}' found for today")
 
     close_explorer_window()
 
