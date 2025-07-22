@@ -17,10 +17,9 @@ def clean_folder(folder_path: Path):
         except Exception as e:
             print(f"❌ Failed to delete: {file}, Reason: {e}")
 
-def copy_wechat_files(target: Path):
+def copy_wechat_files(target: Path, keywords: list[str]):
     month = datetime.now().strftime("%Y-%m")
     source = Path(fr"C:\Users\monica\Documents\xwechat_files\qingchen536521_c584\msg\file\{month}")
-    keywords = ["新范本", "店小秘 非BW", "店小秘 BW"]
 
     for kw in keywords:
         latest = latest_matching_file(source, [".xlsx"], [kw], only_today=False)
@@ -31,15 +30,20 @@ def copy_wechat_files(target: Path):
             print(f"⚠️ No Excel file found with keyword '{kw}'")
 
 def clean_folder_and_copy_files():
-    target_folder = Path(r"C:\Frank\易仓-TP\无小票发货 Sarah")
-
-    clean_folder(target_folder)
-
+    # 第一组路径和关键词
+    target1 = Path(r"C:\Frank\易仓-TP\无小票发货 Sarah")
+    keywords1 = ["新范本", "店小秘 非BW", "店小秘 BW"]
+    clean_folder(target1)
     time.sleep(1)
+    copy_wechat_files(target1, keywords1)
 
-    copy_wechat_files(target_folder)
+    # 第二组路径和关键词
+    target2 = Path(r"C:\ACT\数据对接Frank\每日自发货文件")
+    keywords2 = ["发货小票", "店小秘 非BW"]
+    copy_wechat_files(target2, keywords2)
 
-    os.startfile(target_folder)
+    os.startfile(target1)
+    os.startfile(target2)
 
 '''
 if __name__ == "__main__":

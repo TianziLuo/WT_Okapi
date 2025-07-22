@@ -12,6 +12,7 @@ from utils.func import (
     copy_from_downloads,
     copy2downloads
 )
+from UNI import uni
 
 def threaded(fn):
     def wrapper(*args, **kwargs):
@@ -31,7 +32,7 @@ class App:
     def __init__(self, root):
         self.root = root
         self.root.title("🦫 WT Okapi - Capybara Edition")
-        self.root.geometry("420x420")
+        self.root.geometry("420x440")
         self.root.configure(bg="#e9ede2")  # Capybara background
         self.checkbox_vars = []
         self.build_ui()
@@ -45,6 +46,7 @@ class App:
         row = self.add_button_row("• WT Outbound", WT_out, row)
         row = self.add_button_row("• Copy 'Use' from Downloads", copy_from_downloads, row)
         row = self.add_button_row("• Copy 2.1 to Downloads", copy2downloads, row)
+        row = self.add_button_row("• Uni Express", uni, row)
 
     def add_title(self):
         tk.Label(
