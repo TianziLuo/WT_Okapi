@@ -1,52 +1,32 @@
-# ui.py
 import tkinter as tk
-import threading
-import traceback
+from tkinter import messagebox, scrolledtext
+import sys
+from console import ConsoleRedirector
+from threaded import threaded
+from handlers.tp_download import run_download_tp
+from handlers.actions import ACTIONS
 from TP_acc import ACCOUNTS
-from tkinter import messagebox
-from utils.func import (
-    clean_folder_and_copy_files,
-    download_TP,
-    excel_process,
-    WT_out,
-    copy_from_downloads,
-    copy2downloads
-)
-from UNI import uni
-
-def threaded(fn):
-    def wrapper(*args, **kwargs):
-        def run_and_report():
-            try:
-                fn(*args, **kwargs)
-                print(f"✅ {fn.__name__} succeeded.")
-                messagebox.showinfo("Success", "✅ Operation completed.")
-            except Exception as e:
-                print(f"❌ Error in {fn.__name__}: {e}")
-                print(traceback.format_exc())
-                messagebox.showerror("Error", f"❌ {fn.__name__} failed.\nSee terminal for details.")
-        threading.Thread(target=run_and_report, daemon=True).start()
-    return wrapper
 
 class App:
     def __init__(self, root):
         self.root = root
         self.root.title("🦫 WT Okapi - Capybara Edition")
-        self.root.geometry("420x440")
-        self.root.configure(bg="#e9ede2")  # Capybara background
+        self.root.geometry("475x650")
+        self.root.configure(bg="#e9ede2")
         self.checkbox_vars = []
+
         self.build_ui()
+        self.build_console()
+
+        sys.stdout = ConsoleRedirector(self.console)
+        sys.stderr = ConsoleRedirector(self.console)
 
     def build_ui(self):
         self.add_title()
         row = 1
-        row = self.add_button_row("• Clean Folder & Copy Files", clean_folder_and_copy_files, row)
-        row = self.add_download_section(row)
-        row = self.add_button_row("• Open 2.1", excel_process, row)
-        row = self.add_button_row("• WT Outbound", WT_out, row)
-        row = self.add_button_row("• Copy 'Use' from Downloads", copy_from_downloads, row)
-        row = self.add_button_row("• Copy 2.1 to Downloads", copy2downloads, row)
-        row = self.add_button_row("• Uni Express", uni, row)
+        row = self.add_download_section(row)  # TP Download 移到第二位
+        for label, func in ACTIONS:
+            row = self.add_button_row(label, func, row)
 
     def add_title(self):
         tk.Label(
@@ -54,8 +34,11 @@ class App:
             text="🦫 WT Okapi",
             font=('Segoe UI', 20, 'bold'),
             bg="#e9ede2",
-            fg="#5a4a3c"
-        ).grid(row=0, column=0, columnspan=3, pady=15)
+            fg="#5a4a3c",
+            anchor="center",  
+            justify="center"
+        ).grid(row=0, column=0, columnspan=3, pady=15, sticky="nsew")  
+
     def add_button_row(self, label, func, row):
         tk.Label(
             self.root,
@@ -69,16 +52,12 @@ class App:
             self.root,
             text="Run",
             command=threaded(func),
-            bg="#9E6C55",  
-            fg="#fdf8f4",  
+            bg="#9E6C55",
+            fg="#fdf8f4",
             font=('Segoe UI', 12, 'bold'),
             width=12,
-            height=1,
-            activebackground="#b98568",  
-            activeforeground="#ffffff",
             relief="flat",
-            bd=0,
-            cursor="hand2"
+            bd=0
         ).grid(row=row, column=1, pady=5)
         return row + 1
 
@@ -95,62 +74,52 @@ class App:
         tk.Button(
             self.root,
             text="Download",
-            command=self.run_download_tp,
+            command=lambda: run_download_tp(self.checkbox_vars),
             bg="#9E6C55",
             fg="#fdf8f4",
             font=('Segoe UI', 12, 'bold'),
             width=12,
-            height=1,
-            activebackground="#b98568",
-            activeforeground="#ffffff",
             relief="flat",
-            bd=0,
-            cursor="hand2"
+            bd=0
         ).grid(row=row, column=1, sticky='e', padx=15, pady=10)
 
         row += 1
         for acct in ACCOUNTS:
             var = tk.BooleanVar()
-            cb = tk.Checkbutton(
+            tk.Checkbutton(
                 self.root,
                 text=acct["USERNAME"],
                 variable=var,
-                bg="#e9ede2",  
+                bg="#e9ede2",
                 font=('Segoe UI', 11, 'bold'),
                 fg="#4a4038",
-                activebackground="#e9ede2",
-                activeforeground="#3e3e3e",
-                selectcolor="#e9ede2",
-                highlightthickness=0,
-                bd=0,
-                cursor="hand2"
-            )
-            cb.grid(row=row, column=0, sticky='w', padx=30)
+                selectcolor="#e9ede2"
+            ).grid(row=row, column=0, sticky='w', padx=30)
             self.checkbox_vars.append((var, acct))
             row += 1
         return row
 
-    @threaded
-    def run_download_tp(self):
-        failed_accounts = []
+    def build_console(self):
+        tk.Label(
+            self.root,
+            text="Console Output:",
+            font=('Segoe UI', 14, 'bold'),
+            bg="#e9ede2",
+            fg="#4a4038"
+        ).grid(row=1000, column=0, columnspan=3, sticky='w', padx=15, pady=(10, 0))  
 
-        for var, acct in self.checkbox_vars:
-            if var.get():
-                try:
-                    print(f"▶▶ Processing account: {acct['USERNAME']}")
-                    download_TP(
-                        USERNAME=acct["USERNAME"],
-                        EMAIL=acct["EMAIL"],
-                        PASSWORD=acct["PASSWORD"],
-                        FILENAME=acct["FILENAME"],
-                        headless=False
-                    )
-                except Exception as e:
-                    print(f"❌ Failed for {acct['USERNAME']}: {e}")
-                    failed_accounts.append(acct["USERNAME"])
+        self.console = tk.Text(
+            self.root,
+            height=10,
+            width=50,
+            bg="#fdf8f4",
+            fg="#3e3e3e",
+            font=('Consolas', 10),
+            wrap='word',
+            relief="solid",
+            bd=1
+        )
+        self.console.grid(row=1001, column=0, columnspan=3, padx=15, pady=10, sticky='nsew')
 
-        if not failed_accounts:
-            messagebox.showinfo("Success", "✅ All accounts downloaded successfully.")
-        else:
-            failed_str = "\n".join(failed_accounts)
-            messagebox.showerror("Error", f"❌ Failed accounts:\n{failed_str}\nSee terminal for details.")
+        self.root.grid_rowconfigure(1001, weight=1)
+        self.root.grid_columnconfigure(0, weight=1)
