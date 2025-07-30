@@ -39,8 +39,8 @@ def WT_out():
     template_ws = template_wb.active
 
     # ---------- Define column/row ranges ----------
-    start_col = 33  
-    end_col = 37    
+    start_col = 35  
+    end_col = 39    
     start_row = 3
 
     # Find the last non‑empty row in the E‑H region
