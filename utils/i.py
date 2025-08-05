@@ -5,18 +5,23 @@ from datetime import datetime
 from send2trash import send2trash
 from utils.copy_file import latest_matching_file, copy_file 
 
-def clean_folder(folder_path: Path):
-    file_patterns = ['*.xlsx', '*.csv']
-    files_to_delete = []
-    for pattern in file_patterns:
-        files_to_delete.extend(folder_path.glob(pattern))  
+import shutil
+from pathlib import Path
 
-    for file in files_to_delete:
+def clean_folder(folder_path: Path, target_folder: Path):
+    file_patterns = ['*.xlsx', '*.csv']
+    files_to_move = []
+
+    for pattern in file_patterns:
+        files_to_move.extend(folder_path.glob(pattern))
+
+    for file in files_to_move:
         try:
-            send2trash(str(file))
-            print(f"🗑️ Moved to Recycle Bin: {file}")
+            destination = target_folder / file.name
+            shutil.move(str(file), str(destination))
+            print(f"📁 Moved to: {destination}")
         except Exception as e:
-            print(f"❌ Failed to delete: {file}, Reason: {e}")
+            print(f"❌ Failed to move: {file}, Reason: {e}")
 
 def copy_wechat_files(target: Path, keywords: list[str]):
     month = datetime.now().strftime("%Y-%m")
@@ -33,14 +38,18 @@ def copy_wechat_files(target: Path, keywords: list[str]):
 def clean_folder_and_copy_files():
     # BW
     target1 = Path(r"C:\Frank\易仓-TP\无小票发货 Sarah")
+    folder1 = Path(r"C:\Frank\易仓-TP\无小票发货 Sarah\不要删除")
     keywords1 = ["TP", "店小秘 BW"]
-    clean_folder(target1)
+    clean_folder(target1,folder1)
     time.sleep(1)
     copy_wechat_files(target1, keywords1)
 
     # DV
     target2 = Path(r"C:\ACT\数据对接Frank\每日自发货文件")
+    folder2 = Path(r"C:\ACT\数据对接Frank\每日自发货文件\历史文件")
     keywords2 = ["发货小票", "店小秘 非BW"]
+    clean_folder(target2,folder2)
+    time.sleep(1)
     copy_wechat_files(target2, keywords2)
 
     os.startfile(target1)
