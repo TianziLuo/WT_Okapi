@@ -2879,6 +2879,7 @@
   ('uuid',
    'C:\\Users\\monica\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\uuid.py',
    'PYMODULE'),
+  ('verify', 'C:\\Users\\monica\\Desktop\\Seagull\\WT\\verify.py', 'PYMODULE'),
   ('webbrowser',
    'C:\\Users\\monica\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\webbrowser.py',
    'PYMODULE'),
