@@ -4,7 +4,7 @@ import os
 
 def verify_license():
     # Fixed path to the license file
-    license_path = r"C:\ProgramData\license\license.key"
+    license_path = r"C:\ProgramData\license\WT_license.key"
 
     if not os.path.exists(license_path):
         return False, f"❌ License file not found at:\n{license_path}"
