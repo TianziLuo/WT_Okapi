@@ -1,5 +1,4 @@
 import tkinter as tk
-from tkinter import messagebox, scrolledtext
 import sys
 from console import ConsoleRedirector
 from threaded import threaded
@@ -11,7 +10,7 @@ class App:
     def __init__(self, root):
         self.root = root
         self.root.title("🦫 WT Okapi - Capybara Edition")
-        self.root.geometry("475x650")
+        self.root.geometry("475x630")
         self.root.configure(bg="#e9ede2")
         self.checkbox_vars = []
 
@@ -24,7 +23,7 @@ class App:
     def build_ui(self):
         self.add_title()
         row = 1
-        row = self.add_download_section(row)  # TP Download 移到第二位
+        row = self.add_download_section(row)  # TP Download move to the second line
         for label, func in ACTIONS:
             row = self.add_button_row(label, func, row)
 

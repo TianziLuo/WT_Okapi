@@ -1,11 +1,11 @@
 import os
 from pathlib import Path
-from utils.copy_file import latest_matching_file, copy_file, close_explorer_window
+from utils.copy_file import latest_matching_file, copy_file
 
 
 def copy_from_downloads():
     source = Path(os.path.expanduser("~/Downloads"))
-    target = Path(r"C:\Frank\易仓-TP\无小票发货 Sarah")
+    target = Path(r"C:\ACT\公用核心\每天自发货")
     keywords = ["Use"]
 
     for kw in keywords:
@@ -15,7 +15,6 @@ def copy_from_downloads():
         else:
             print(f"⚠️ No CSV file containing '{kw}' found for today")
 
-    close_explorer_window()
 
 '''
 if __name__ == "__main__":

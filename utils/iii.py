@@ -3,7 +3,7 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 def download_TP(USERNAME: str, EMAIL: str, PASSWORD: str, FILENAME: str,
-                target_folder: str = r"C:\Frank\原始数据\店小秘+TP+订单+盘点",
+                target_folder: str = r"C:\ACT\公用核心\TP",
                 chrome_path: str = r"C:\Program Files\Google\Chrome\Application\chrome.exe",
                 headless: bool = False) -> None:
 

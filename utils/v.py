@@ -17,8 +17,8 @@ def clear_gen_py_cache():
         print(f"ℹ️ gen_py folder not found at: {gen_py_dir}")
 
 def open_excel():
-    file1 = r'C:\Frank\原始数据\店小秘+TP+订单+盘点\新TP订单下载 order_report.csv'
-    file2 = r'C:\Frank\原始数据\店小秘+TP+订单+盘点\老TP订单下载 order_report.csv'
+    file1 = r"C:\ACT\公用核心\TP\新TP订单下载 order_report.csv"
+    file2 = r"C:\ACT\公用核心\TP\老TP订单下载 order_report.csv"
     xlsx_path = r'C:\Frank\2.1_易仓管理.xlsx'
 
     today = datetime.date.today()

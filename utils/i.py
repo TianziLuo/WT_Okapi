@@ -36,24 +36,15 @@ def copy_wechat_files(target: Path, keywords: list[str]):
             print(f"⚠️ No Excel file found with keyword '{kw}'")
 
 def clean_folder_and_copy_files():
-    # BW
-    target1 = Path(r"C:\Frank\易仓-TP\无小票发货 Sarah")
-    folder1 = Path(r"C:\Frank\易仓-TP\无小票发货 Sarah\不要删除")
-    keywords1 = ["TP", "店小秘 BW"]
-    clean_folder(target1,folder1)
+    # BW DV
+    target = Path(r"C:\ACT\公用核心\每天自发货")
+    folder = Path(r"C:\ACT\公用核心\每天自发货\历史文件")
+    keywords = ["发货小票", "店小秘 非BW","TP", "店小秘 BW"]
+    clean_folder(target,folder)
     time.sleep(1)
-    copy_wechat_files(target1, keywords1)
+    copy_wechat_files(target, keywords)
 
-    # DV
-    target2 = Path(r"C:\ACT\数据对接Frank\每日自发货文件")
-    folder2 = Path(r"C:\ACT\数据对接Frank\每日自发货文件\历史文件")
-    keywords2 = ["发货小票", "店小秘 非BW"]
-    clean_folder(target2,folder2)
-    time.sleep(1)
-    copy_wechat_files(target2, keywords2)
-
-    os.startfile(target1)
-    os.startfile(target2)
+    os.startfile(target)
 
 '''
 if __name__ == "__main__":
