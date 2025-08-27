@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 def copy2downloads():
     # —————— Configuration ——————
-    source_path = r"C:\Frank\2.1_易仓管理.xlsx"
+    source_path = r"C:\ACT\公用核心\2.1_易仓管理.xlsx"
     download_dir = Path(os.path.expanduser('~')) / 'Downloads'
     max_file_age = 30 
 

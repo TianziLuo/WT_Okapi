@@ -19,7 +19,7 @@ def clear_gen_py_cache():
 def open_excel():
     file1 = r"C:\ACT\公用核心\TP\新TP订单下载 order_report.csv"
     file2 = r"C:\ACT\公用核心\TP\老TP订单下载 order_report.csv"
-    xlsx_path = r'C:\Frank\2.1_易仓管理.xlsx'
+    xlsx_path = r"C:\ACT\公用核心\2.1_易仓管理.xlsx"
 
     today = datetime.date.today()
 
