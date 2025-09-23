@@ -3,11 +3,14 @@ import sys
 import shutil
 from pathlib import Path
 from datetime import datetime, timedelta
+from config_paths import get_wt_paths
 
 def copy2downloads():
+    paths = get_wt_paths()
+    
     # —————— Configuration ——————
-    source_path = r"C:\ACT\公用核心\2.1_易仓管理.xlsx"
-    download_dir = Path(os.path.expanduser('~')) / 'Downloads'
+    source_path = paths["core_2_1"]
+    download_dir = paths["downloads"]
     max_file_age = 30 
 
     # 1) Check that the source file exists

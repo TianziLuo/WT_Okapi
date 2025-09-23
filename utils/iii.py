@@ -1,11 +1,14 @@
 import time
 from pathlib import Path
 from playwright.sync_api import sync_playwright
+from config_paths import get_wt_paths
 
 def download_TP(USERNAME: str, EMAIL: str, PASSWORD: str, FILENAME: str,
-                target_folder: str = r"C:\ACT\公用核心\TP",
                 chrome_path: str = r"C:\Program Files\Google\Chrome\Application\chrome.exe",
                 headless: bool = False) -> None:
+    
+    paths = get_wt_paths()
+    target_folder = paths["tp_download_folder"]
 
     file_path = Path(target_folder) / FILENAME
     file_path.parent.mkdir(parents=True, exist_ok=True)

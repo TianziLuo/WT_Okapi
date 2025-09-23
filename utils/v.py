@@ -4,6 +4,7 @@ import shutil
 import tempfile
 import datetime
 import win32com.client as win32
+from config_paths import get_wt_paths
 
 def clear_gen_py_cache():
     gen_py_dir = os.path.join(tempfile.gettempdir(), "gen_py")
@@ -17,24 +18,27 @@ def clear_gen_py_cache():
         print(f"ℹ️ gen_py folder not found at: {gen_py_dir}")
 
 def open_excel():
-    file1 = r"C:\ACT\公用核心\TP\新TP订单下载 order_report.csv"
-    file2 = r"C:\ACT\公用核心\TP\老TP订单下载 order_report.csv"
-    xlsx_path = r"C:\ACT\公用核心\2.1_易仓管理.xlsx"
+    paths = get_wt_paths()
+
+    file1 = paths["new_order_file"]
+    file2 = paths["old_order_file"]
+    xlsx_path = paths["core_2_1"]
+    target_sheet = "BW出库一遍过"
 
     today = datetime.date.today()
 
     def is_modified_today(path: str) -> bool:
-        return os.path.isfile(path) and datetime.date.fromtimestamp(os.path.getmtime(path)) == today
+        return os.path.isfile(path) and datetime.datetime.fromtimestamp(os.path.getmtime(path)).date() == today
 
     if is_modified_today(file1) and is_modified_today(file2):
         try:
-            print("✅ Both order files are updated. Opening Excel file...")
-
-            excel = win32.Dispatch("Excel.Application")  # Late binding avoids gen_py
+            excel = win32.Dispatch("Excel.Application")
             excel.Visible = True
             wb = excel.Workbooks.Open(xlsx_path)
 
-            print("✅ Excel file opened. Please refresh or process manually.")
+            # active sheet
+            wb.Sheets(target_sheet).Activate()
+
         except Exception as e:
             print(f"❌ Operation failed: {e}")
     else:

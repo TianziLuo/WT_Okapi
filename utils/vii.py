@@ -1,11 +1,13 @@
 import os
 from pathlib import Path
 from utils.copy_file import latest_matching_file, copy_file
-
+from config_paths import get_wt_paths
 
 def copy_from_downloads():
-    source = Path(os.path.expanduser("~/Downloads"))
-    target = Path(r"C:\ACT\公用核心\每天自发货")
+    paths = get_wt_paths()
+
+    source = paths["downloads"]
+    target = paths["shipping_folder"]
     keywords = ["Use"]
 
     for kw in keywords:

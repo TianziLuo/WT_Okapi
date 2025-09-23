@@ -2,9 +2,9 @@ import os
 import time
 from pathlib import Path
 from datetime import datetime
-from send2trash import send2trash
 from utils.copy_file import latest_matching_file, copy_file
 import shutil
+from config_paths import get_wt_paths
 
 def clean_folder(folder_path: Path, target_folder: Path):
     file_patterns = ['*.xlsx', '*.csv']
@@ -31,9 +31,11 @@ def copy_wechat_files(target: Path, keywords: list[str]):
             print(f"⚠️ No Excel file found with keyword '{kw}'")
 
 def clean_folder_and_copy_files():
+    paths = get_wt_paths()
+
     # BW DV
-    target = Path(r"C:\ACT\公用核心\每天自发货")
-    folder = Path(r"C:\ACT\公用核心\每天自发货\历史文件")
+    target = paths["daily_shipping_dir"]
+    folder = paths["shipping_backup_folder"]
     keywords = ["发货小票", "店小秘 非BW", "TP", "店小秘 BW"]
 
     clean_folder(target, folder)

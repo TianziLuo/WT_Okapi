@@ -10,7 +10,7 @@ class App:
     def __init__(self, root):
         self.root = root
         self.root.title("🦫 WT Okapi - Capybara Edition")
-        self.root.geometry("475x630")
+        self.root.geometry("475x530")
         self.root.configure(bg="#e9ede2")
         self.checkbox_vars = []
 

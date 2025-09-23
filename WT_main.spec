@@ -4,8 +4,8 @@
 a = Analysis(
     ['WT_main.py'],
     pathex=[],
-    binaries=[('amzfileops.exe', '.')],
-    datas=[],
+    binaries=[],
+    datas=[('WT_config.ini', '.')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

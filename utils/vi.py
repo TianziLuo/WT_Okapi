@@ -4,11 +4,14 @@ import time
 import xlwt
 from datetime import datetime
 from openpyxl import load_workbook
+from config_paths import get_wt_paths
+
 
 def WT_out():
+    paths = get_wt_paths()
     # ---------- Configuration ----------
     MAX_FILE_AGE = 30  # seconds
-    source_path = r"C:\ACT\公用核心\2.1_易仓管理.xlsx"
+    source_path = paths["core_2_1"]
     template_path = r"C:\Template\出库.xlsx"
 
     # Verify that the source file is fresh enough
