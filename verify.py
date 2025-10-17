@@ -35,6 +35,6 @@ def verify_license():
     expected_code = hashlib.sha256(f"{user}{secret}".encode()).hexdigest()[:16]
 
     if license_code != expected_code:
-        return False, "❌ Invalid license code."
+        return False, "❌error code:0x00000001."
 
     return True, f"✅ License verified: {user}, valid until {expiry_date}."

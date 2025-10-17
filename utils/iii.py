@@ -3,6 +3,57 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 from config_paths import get_wt_paths
 
+def detect_login_placeholders(page):
+    """Detect login form placeholders using keyword matching"""
+    # Get all input placeholders on the page
+    placeholders = []
+    try:
+        inputs = page.locator('input[placeholder]')
+        for i in range(inputs.count()):
+            placeholder = inputs.nth(i).get_attribute('placeholder')
+            if placeholder:
+                placeholders.append(placeholder)
+    except:
+        pass
+    
+    print(f"🔍 Found placeholders: {placeholders}")
+    
+    # Keyword matching for different field types
+    username_keywords = ['账户', '用户', 'account', 'login', '邮箱', 'email']
+    email_keywords = ['邮件', 'email', 'mail', '电子']
+    password_keywords = ['密码', 'password', 'pass']
+    
+    # Find fields by keyword matching
+    username_placeholder = None
+    email_placeholder = None
+    password_placeholder = None
+    
+    for placeholder in placeholders:
+        placeholder_lower = placeholder.lower()
+        
+        # Check for username field
+        if not username_placeholder:
+            for keyword in username_keywords:
+                if keyword in placeholder_lower:
+                    username_placeholder = placeholder
+                    break
+        
+        # Check for email field
+        if not email_placeholder:
+            for keyword in email_keywords:
+                if keyword in placeholder_lower:
+                    email_placeholder = placeholder
+                    break
+        
+        # Check for password field
+        if not password_placeholder:
+            for keyword in password_keywords:
+                if keyword in placeholder_lower:
+                    password_placeholder = placeholder
+                    break
+    
+    return username_placeholder, email_placeholder, password_placeholder
+
 def download_TP(USERNAME: str, EMAIL: str, PASSWORD: str, FILENAME: str,
                 chrome_path: str = r"C:\Program Files\Google\Chrome\Application\chrome.exe",
                 headless: bool = False) -> None:
@@ -21,9 +72,33 @@ def download_TP(USERNAME: str, EMAIL: str, PASSWORD: str, FILENAME: str,
 
         # Login
         page.goto("https://www.teapplix.com/auth/")
-        page.fill('input[placeholder="账户名"]', USERNAME)
-        page.fill('input[placeholder="登录电子邮件"]', EMAIL)
-        page.fill('input[placeholder="密码"]', PASSWORD)
+        
+        # Detect placeholders dynamically
+        username_placeholder, email_placeholder, password_placeholder = detect_login_placeholders(page)
+        
+        print(f"🔍 Detected placeholders - Username: {username_placeholder}, Email: {email_placeholder}, Password: {password_placeholder}")
+        
+        # Fill login form with detected placeholders
+        if username_placeholder:
+            page.fill(f'input[placeholder="{username_placeholder}"]', USERNAME)
+        else:
+            # Fallback to first text input
+            page.locator('input[type="text"]').first.fill(USERNAME)
+            
+        if email_placeholder:
+            page.fill(f'input[placeholder="{email_placeholder}"]', EMAIL)
+        else:
+            # Fallback to email input or second text input
+            try:
+                page.locator('input[type="email"]').first.fill(EMAIL)
+            except:
+                page.locator('input[type="text"]').nth(1).fill(EMAIL)
+                
+        if password_placeholder:
+            page.fill(f'input[placeholder="{password_placeholder}"]', PASSWORD)
+        else:
+            # Fallback to password input
+            page.locator('input[type="password"]').first.fill(PASSWORD)
 
         page.click('button.ant-btn-primary')
         page.wait_for_load_state("networkidle")
