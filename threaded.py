@@ -8,7 +8,6 @@ def threaded(fn):
             try:
                 fn(*args, **kwargs)
                 print(f"✅ {fn.__name__} succeeded.")
-                messagebox.showinfo("Success", "✅ Operation completed.")
             except Exception as e:
                 print(f"❌ Error in {fn.__name__}: {e}")
                 print(traceback.format_exc())

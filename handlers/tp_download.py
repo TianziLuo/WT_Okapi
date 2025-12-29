@@ -21,7 +21,5 @@ def run_download_tp(checkbox_vars):
                 print(f"❌ Failed for {acct['USERNAME']}: {e}")
                 failed_accounts.append(acct["USERNAME"])
 
-    if not failed_accounts:
-        messagebox.showinfo("Success", "✅ All accounts downloaded successfully.")
-    else:
+    if failed_accounts:
         messagebox.showerror("Error", f"❌ Failed accounts:\n" + "\n".join(failed_accounts))
